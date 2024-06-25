@@ -120,6 +120,83 @@ platelets = st.text_input('Platelets(10*9/L):', value=290)
 albumin = st.text_input('Albumin(g/L):', value=35)
 submit = st.button('Submit')
 
+
+
+
+from htbuilder import HtmlElement, div, ul, li, br, hr, a, p, img, styles, classes, fonts
+from htbuilder.units import percent, px
+from htbuilder.funcs import rgba, rgb
+
+
+def image(src_as_string, **style):
+    return img(src=src_as_string, style=styles(**style))
+
+
+def link(link, text, **style):
+    return a(_href=link, _target="_blank", style=styles(**style))(text)
+
+
+def layout(*args):
+
+    style = """
+    <style>
+      # MainMenu {visibility: hidden;}
+      footer {visibility: hidden;}
+     .stApp { bottom: 105px; }
+    </style>
+    """
+
+    style_div = styles(
+        position="fixed",
+        left=0,
+        bottom=0,
+        margin=px(0, 0, 0, 0),
+        width=percent(100),
+        color="orange",
+        text_align="center",
+        height="auto",
+        opacity=1
+    )
+
+    style_hr = styles(
+        display="block",
+        margin=px(8, 8, "auto", "auto"),
+        border_style="inset",
+        border_width=px(2)
+    )
+
+    body = p()
+    foot = div(
+        style=style_div
+    )(
+        hr(
+            style=style_hr
+        ),
+        body
+    )
+
+    st.markdown(style, unsafe_allow_html=True)
+
+    for arg in args:
+        if isinstance(arg, str):
+            body(arg)
+
+        elif isinstance(arg, HtmlElement):
+            body(arg)
+
+    st.sidebar.markdown(str(foot), unsafe_allow_html=True)
+
+
+def footer():
+    myargs = [
+        "Made ",
+              "  by ",
+         " Tushar Pandey"
+        ]
+    layout(*myargs)
+
+
+
 if submit:
     st.subheader("Reports")
     info = np.array([[age, bmi, gravida, sbp, dbp, proteinuria, blood_urea_nitrogen, serum_creatinine,
@@ -127,3 +204,7 @@ if submit:
     info = info.astype(float)
     prediction = patient_prediction(info)
     st.write(prediction)
+
+
+    if __name__ == "__main__":
+        footer()
