@@ -1,3 +1,6 @@
+from htbuilder.funcs import rgba, rgb
+from htbuilder.units import percent, px
+from htbuilder import HtmlElement, div, ul, li, br, hr, a, p, img, styles, classes, fonts
 from model import patient_prediction
 import streamlit as st
 import numpy as np
@@ -121,13 +124,6 @@ albumin = st.text_input('Albumin(g/L):', value=35)
 submit = st.button('Submit')
 
 
-
-
-from htbuilder import HtmlElement, div, ul, li, br, hr, a, p, img, styles, classes, fonts
-from htbuilder.units import percent, px
-from htbuilder.funcs import rgba, rgb
-
-
 def image(src_as_string, **style):
     return img(src=src_as_string, style=styles(**style))
 
@@ -190,11 +186,10 @@ def layout(*args):
 def footer():
     myargs = [
         "Made ",
-              "  by ",
-         " Tushar Pandey"
-        ]
+        "  by ",
+        " Tushar Pandey"
+    ]
     layout(*myargs)
-
 
 
 if submit:
@@ -204,7 +199,6 @@ if submit:
     info = info.astype(float)
     prediction = patient_prediction(info)
     st.write(prediction)
-
 
     if __name__ == "__main__":
         footer()
